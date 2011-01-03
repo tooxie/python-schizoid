@@ -197,6 +197,10 @@ echo ""
 
 # PIP Installs Packages
 
+echo "** Installing pep8..."
+assert $VENV/bin/pip install pep8
+echo ""
+
 echo "** Installing ipdb and ipython..."
 assert $VENV/bin/pip install ipdb
 echo ""

@@ -77,6 +77,7 @@ following software:
 * setuptools 0.6c11
 * pip 0.8.2
 * GNU gettext 0.18.1.1
+* pep8
 * ipdb
 * ipython
 * mysql-python
