@@ -82,7 +82,18 @@ following software:
 * ipython
 * mysql-python
 * pygraphviz (to use with django_extensions)
-* django (right now downloads trunk, but the idea is to use 1.3.X as soon as it's released)
+* django (right now downloads trunk, but the idea is to use 1.3.X as soon as
+  it's released)
+
+
+Post-install
+------------
+
+When Schizoid finishes installing everything it looks for a file named
+post_install.sh to execute user-defined actions. Remember that it *must* be an
+executable file.
+
+By default it doesn't exists, feel free to create it.
 
 
 TODO list

@@ -225,6 +225,13 @@ assert ln -s ../../../src/django $VENV/lib/python$PYV/site-packages/django
 assert ln -s ../lib/python$PYV/site-packages/django/bin/django-admin.py $VENV/bin/django-admin.py
 echo ""
 
+POST_INSTALL=`dirname $0`/post_install.sh
+if [ -a $POST_INSTALL ]; then
+    echo "** Running post-install script..."
+    $POST_INSTALL
+fi
+echo ""
+
 echo -n "** Cleaning up a little... "
 cd $VENV
 assert rm -Rf "$VENV/src/Python-$PYV"
@@ -236,5 +243,5 @@ echo "[ OK ]"
 echo `date` >> $PROF
 echo "--- END ---" >> $PROF
 
-echo "Done! =)"
+echo "** Now run 'source $VENV/bin/activate' to activate the environment."
 # :wq
