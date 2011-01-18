@@ -90,10 +90,10 @@ Post-install
 ------------
 
 When Schizoid finishes installing everything it looks for a file named
-post_install.sh to execute user-defined actions. Remember that it *must* be an
+*post_install.sh* to execute user-defined actions. Remember that it **must** be an
 executable file.
 
-By default it doesn't exists, feel free to create it.
+By default it doesn't exists, you have to create it with the proper permissions.
 
 
 TODO list
