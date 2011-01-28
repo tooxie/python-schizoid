@@ -9,16 +9,16 @@ outer world.
 Dependencies
 ============
 
-Schizoid does its best effort to avoid communicating with the outer world, but
-at some extent it needs resources to operate properly. There are 2 types of
-dependencies:
+*Schizoid* does its best effort to avoid communicating with the outer world,
+but at some extent it needs resources to operate properly. There are two types
+of dependencies:
 
 
 Life dependencies
 -----------------
 
 These are the unavoidable dependencies you need in your system to run
-schizoid.sh and create a virtual environment. It can be summarized to one:
+*schizoid.sh* and create a virtual environment. It can be summarized to one:
 
 * virtualenv
 
@@ -39,7 +39,7 @@ environment, except for one: the database. It would be not-smart to compile
 and install a database engine, so we rely on the system to provide us with such
 service.
 
-Schizoid installs the MySQLdb driver, but you can install a different one or
+*Schizoid* installs the MySQLdb driver, but you can install a different one or
 no driver at all.
 
 
@@ -54,8 +54,7 @@ directories structure would look like::
      include/
      lib/
          pkgconfig/
-     lib64@             (only in 64bits systems)
-         -> ~/venv/lib
+     lib64@ -> ~/venv/lib  (only in 64bits systems)
      share/
          alocal/
          doc/
@@ -70,7 +69,7 @@ directories structure would look like::
 Software
 ========
 
-By default schizoid.sh downloads, compiles (when required) and installs the
+By default *schizoid.sh* downloads, compiles (when required) and installs the
 following software:
 
 * Python 2.7
@@ -81,6 +80,8 @@ following software:
 * ipdb
 * ipython
 * mysql-python
+* soaplib
+* suds
 * pygraphviz (to use with django_extensions)
 * django (right now downloads trunk, but the idea is to use 1.3.X as soon as
   it's released)
@@ -89,22 +90,24 @@ following software:
 Post-install
 ------------
 
-When Schizoid finishes installing everything it looks for a file named
-*post_install.sh* to execute user-defined actions. Remember that it **must** be an
-executable file.
+When *Schizoid* finishes installing everything it looks for a file named
+*post_install.sh* to execute user-defined actions. Remember that it must be an
+**executable** file.
 
-By default it doesn't exists, you have to create it with the proper permissions.
+By default it doesn't exists, you have to create it with the proper
+permissions.
 
 
-TODO list
-=========
+TO-DO list
+==========
 
-* Install dependencies in debian systems.
+* Install dependencies in debian systems. (Currently works only on yum-based
+  boxes.)
 * Allow for easy customization.
 * Recognize partially installed environments and continue from checkpoint.
 
-Right now works good for me, so I don't think I'm going to add this features.
-If you want to do it I will gladly merge your improvements.
+Right now works good for me, so I don't think I'm going to add any of these
+features. If you want to do it I will gladly merge your improvements.
 
 Happy hacking!
 

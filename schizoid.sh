@@ -87,23 +87,20 @@ assert virtualenv --no-site-packages $VENV
 assert mkdir -p $VENV/src
 echo ""
 
-echo -n "** Activating environment... "
-source $VENV/bin/activate
-echo "[ OK ]"
-
 # dependencies
 echo "** Installing dependencies..."
 BIN=`which yum 2>/dev/null`
 if [ $? -eq 0 ]; then
     yum -y --skip-broken install \
         autoconf automake automake14 automake15 automake16 automake17 binutils \
-        bison bluez-libs-devel byacc bzip2-devel crash cscope ctags cvs db4-devel \
-        dev86 diffstat dogtail doxygen elfutils flex gcc gcc-c++ gcc-gfortran gdb \
-        gdbm-devel gettext graphviz-devel imake indent libjpeg-devel libtool \
-        ltrace make mysql-devel ncurses-devel nss_db openssl-devel oprofile \
-        patchutils pkgconfig pstack python-ldap rcs readline-devel \
-        redhat-rpm-config rpm-build splint sqlite-devel strace subversion swig \
-        systemtap texinfo tk-devel valgrind zlib-devel
+        bison bluez-libs-devel byacc bzip2-devel crash cscope ctags cvs \
+        db4-devel dev86 diffstat dogtail doxygen elfutils flex gcc gcc-c++ \
+        gcc-gfortran gdb gdbm-devel gettext graphviz-devel imake indent \
+        libgcrypt-devel libgpg-error-devel libjpeg-devel libtool libxml2-devel \
+        libxslt libxslt-devel ltrace make mysql-devel ncurses-devel nss_db \
+        openssl-devel oprofile patchutils pkgconfig pstack python-ldap rcs \
+        readline-devel redhat-rpm-config rpm-build splint sqlite-devel strace \
+        subversion swig systemtap texinfo tk-devel valgrind zlib-devel
 else
     BIN=`which apt-get 2>/dev/null`
     #TODO: Install dependencies for debian systems.
@@ -207,6 +204,14 @@ echo ""
 
 echo "** Installing mysql python driver..."
 assert $VENV/bin/pip install mysql-python
+echo ""
+
+echo "** Installing soaplib..."
+assert $VENV/bin/pip install soaplib
+echo ""
+
+echo "** Installing suds..."
+assert $VENV/bin/pip install suds
 echo ""
 
 echo "** Installing pygraphviz..."
