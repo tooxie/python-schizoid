@@ -19,10 +19,13 @@
 
 # virtualenv
 export VENV=~/venv # Virtual environment directory
+
+export GTV='0.18.1.1' # Gettext version
+export MCV='1.4.5' # Memcached version
+export PIPV='0.8.2' # PIP version
 export PYV='2.7' # Python version
 export STV='0.6c11' # Setuptools version
-export PIPV='0.8.2' # PIP version
-export GTV='0.18.1.1' # Gettext version
+
 export PROF="`dirname $0`/profile.txt" # Profiling file
 
 # functions
@@ -96,11 +99,12 @@ if [ $? -eq 0 ]; then
         bison bluez-libs-devel byacc bzip2-devel crash cscope ctags cvs \
         db4-devel dev86 diffstat dogtail doxygen elfutils flex gcc gcc-c++ \
         gcc-gfortran gdb gdbm-devel gettext graphviz-devel imake indent \
-        libgcrypt-devel libgpg-error-devel libjpeg-devel libtool libxml2-devel \
-        libxslt libxslt-devel ltrace make mysql-devel ncurses-devel nss_db \
-        openssl-devel oprofile patchutils pkgconfig pstack python-ldap rcs \
-        readline-devel redhat-rpm-config rpm-build splint sqlite-devel strace \
-        subversion swig systemtap texinfo tk-devel valgrind zlib-devel
+        libevent-devel, libgcrypt-devel libgpg-error-devel libjpeg-devel \
+        libtool libxml2-devel libxslt libxslt-devel ltrace make mysql-devel \
+        ncurses-devel nss_db openssl-devel oprofile patchutils pkgconfig \
+        pstack python-ldap rcs readline-devel redhat-rpm-config rpm-build \
+        splint sqlite-devel strace subversion swig systemtap texinfo tk-devel \
+        valgrind zlib-devel
 else
     BIN=`which apt-get 2>/dev/null`
     #TODO: Install dependencies for debian systems.
@@ -183,12 +187,35 @@ assert tar xzf "gettext-$GTV.tar.gz"
 cd "$VENV/src/gettext-$GTV"
 make clean
 echo "** Configuring GNU gettext..."
-assert ./configure --prefix=$VENV --oldincludedir=$VENV/include --datarootdir=$VENV/share
+assert ./configure --prefix=$VENV --oldincludedir=$VENV/include
 echo ""
 echo "** Compiling GNU gettext..."
 assert make
 echo ""
 echo "** Installing GNU gettext..."
+assert make install
+echo ""
+
+# memcached
+cd $VENV/src
+if [ ! -f "$VENV/src/memcached-$MCV.tar.gz" ]; then
+    echo "** Downloading memcached..."
+    assert wget "http://memcached.googlecode.com/files/memcached-$MCV.tar.gz"
+    echo ""
+fi
+if [ -f "$VENV/src/memcached-$MCV" ]; then
+    assert rm -Rf "$VENV/src/memcached-$MCV"
+fi
+assert tar xzf "memcached-$MCV.tar.gz"
+cd "$VENV/src/memcached-$MCV"
+make clean
+echo "** Configuring memcached..."
+assert ./configure --prefix=$VENV --oldincludedir=$VENV/include
+echo ""
+echo "** Compiling memcached..."
+assert make
+echo ""
+echo "** Installing memcached..."
 assert make install
 echo ""
 
@@ -204,6 +231,10 @@ echo ""
 
 echo "** Installing mysql python driver..."
 assert $VENV/bin/pip install mysql-python
+echo ""
+
+echo "** Installing python-memcached..."
+assert $VENV/bin/pip install python-memcached
 echo ""
 
 echo "** Installing soaplib..."
