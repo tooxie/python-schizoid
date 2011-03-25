@@ -249,16 +249,22 @@ echo "** Installing pygraphviz..."
 assert $VENV/bin/pip install pygraphviz
 echo ""
 
+echo "** Installing django-admin-tools..."
+assert $VENV/bin/pip install django-admin-tools
+echo ""
+
+echo "** Installing docutils..."
+assert $VENV/bin/pip install docutils
+echo ""
+
 echo "** Installing django..."
-if [ -a $VENV/src/django-trunk ]; then
-    rm -Rf $VENV/src/django-trunk
+if [ -a "$VENV/src/django-1.3.X" ]; then
+    rm -Rf "$VENV/src/django-1.3.X"
 fi
 cd $VENV/src
-# assert svn checkout http://code.djangoproject.com/svn/django/branches/releases/1.3.X/django
-assert svn checkout http://code.djangoproject.com/svn/django/trunk/django
-# assert svn export django $VENV/lib/python$PYV/site-packages/django
-assert ln -s ../../../src/django $VENV/lib/python$PYV/site-packages/django
-assert ln -s ../lib/python$PYV/site-packages/django/bin/django-admin.py $VENV/bin/django-admin.py
+assert svn checkout http://code.djangoproject.com/svn/django/branches/releases/1.3.X django-1.3.X
+assert ln -s "django-1.3.X/django" "$VENV/lib/python$PYV/site-packages/django"
+assert ln -s "django-1.3.X/django/bin/django-admin.py" "$VENV/bin/django-admin.py"
 echo ""
 
 POST_INSTALL=`dirname $0`/post_install.sh

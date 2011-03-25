@@ -63,7 +63,7 @@ directories structure would look like::
          locale/
          man/
      src/
-         django-trunk/
+         django-1.3.X/
 
 
 Software
@@ -85,8 +85,9 @@ following software:
 * soaplib
 * suds
 * pygraphviz (to use with django_extensions)
-* django (right now downloads trunk, but the idea is to use 1.3.X as soon as
-  it's released)
+* django-admin-tools
+* docutils
+* django 1.3.X
 
 
 Post-install
