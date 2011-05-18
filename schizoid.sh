@@ -136,7 +136,8 @@ echo "** Installing python..."
 assert make install
 echo ""
 
-export PYTHONBIN=$VENV/bin/python$PYV
+export PYTHONBIN=$VENV/bin/python
+export PYTHONLIB=$VENV/lib/python${PYV:0:3}/site-packages
 
 # mod_wsgi
 cd $VENV/src
@@ -292,7 +293,7 @@ if [ -a "$VENV/src/django-1.3.X" ]; then
 fi
 cd $VENV/src
 assert svn checkout http://code.djangoproject.com/svn/django/branches/releases/1.3.X django-1.3.X
-assert ln -s "django-1.3.X/django" "$VENV/lib/python$PYV/site-packages/django"
+assert ln -s "django-1.3.X/django" "$PYTHONLIB/django"
 assert ln -s "django-1.3.X/django/bin/django-admin.py" "$VENV/bin/django-admin.py"
 echo ""
 
