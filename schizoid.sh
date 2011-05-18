@@ -20,6 +20,7 @@
 # virtualenv
 export VENV=~/venv # Virtual environment directory
 
+export AMW='3.3' # Apache's mod_wsgi module version
 export GTV='0.18.1.1' # Gettext version
 export MCV='1.4.5' # Memcached version
 export PIPV='0.8.2' # PIP version
@@ -95,11 +96,11 @@ echo "** Installing dependencies..."
 BIN=`which yum 2>/dev/null`
 if [ $? -eq 0 ]; then
     yum -y --skip-broken install \
-        autoconf automake automake14 automake15 automake16 automake17 binutils \
-        bison bluez-libs-devel byacc bzip2-devel crash cscope ctags cvs \
-        db4-devel dev86 diffstat dogtail doxygen elfutils flex gcc gcc-c++ \
-        gcc-gfortran gdb gdbm-devel gettext graphviz-devel imake indent \
-        libevent-devel, libgcrypt-devel libgpg-error-devel libjpeg-devel \
+        apxs autoconf automake automake14 automake15 automake16 automake17 \
+        binutils bison bluez-libs-devel byacc bzip2-devel crash cscope ctags \
+        cvs db4-devel dev86 diffstat dogtail doxygen elfutils flex gcc gcc-c++ \
+        gcc-gfortran gdb gdbm-devel gettext graphviz-devel httpd-devel imake \
+        indent libevent-devel, libgcrypt-devel libgpg-error-devel libjpeg-devel \
         libtool libxml2-devel libxslt libxslt-devel ltrace make mysql-devel \
         ncurses-devel nss_db openssl-devel oprofile patchutils pkgconfig \
         pstack python-ldap rcs readline-devel redhat-rpm-config rpm-build \
@@ -123,8 +124,8 @@ if [ -f "$VENV/src/Python-$PYV" ]; then
 fi
 assert tar xzf "Python-$PYV.tgz"
 cd "$VENV/src/Python-$PYV"
-make clean
 echo "** Configuring python..."
+assert export CFLAGS=-fPIC
 assert ./configure --prefix=$VENV --oldincludedir=$VENV/include \
     --datarootdir=$VENV/share --disable-ipv6 --enable-unicode
 echo ""
@@ -132,6 +133,30 @@ echo "** Compiling python..."
 assert make
 echo ""
 echo "** Installing python..."
+assert make install
+echo ""
+
+export PYTHONBIN=$VENV/bin/python$PYV
+
+# mod_wsgi
+cd $VENV/src
+if [ ! -f "$VENV/src/mod_wsgi-$AMW.tar.gz" ]; then
+    echo "** Downloading mod_wsgi..."
+    assert wget "http://modwsgi.googlecode.com/files/mod_wsgi-$AMW.tar.gz"
+    echo ""
+fi
+if [ -f "$VENV/src/mod_wsgi-$AMW" ]; then
+    assert rm -Rf "$VENV/src/mod_wsgi-$AMW"
+fi
+assert tar xzf "mod_wsgi-$AMW.tar.gz"
+cd "$VENV/src/mod_wsgi-$AMW"
+echo "** Configuring mod_python..."
+assert ./configure --prefix=$VENV --with-python=$VENV/bin/python # May be missing apxs
+echo ""
+echo "** Compiling mod_wsgi..."
+assert make
+echo ""
+echo "** Installing mod_wsgi..."
 assert make install
 echo ""
 
@@ -148,10 +173,10 @@ fi
 assert tar xzf "$VENV/src/setuptools-$STV.tar.gz"
 cd $VENV/src/setuptools-$STV
 echo "** Compiling setuptools..."
-assert $VENV/bin/python$PYV $VENV/src/setuptools-$STV/setup.py build
+assert $PYTHONBIN $VENV/src/setuptools-$STV/setup.py build
 echo ""
 echo "** Installing setuptools..."
-$VENV/bin/python$PYV $VENV/src/setuptools-$STV/setup.py install
+$PYTHONBIN $VENV/src/setuptools-$STV/setup.py install
 echo ""
 
 # pip
@@ -167,10 +192,10 @@ fi
 assert tar xzf "pip-$PIPV.tar.gz"
 cd "$VENV/src/pip-$PIPV"
 echo "** Compiling pip..."
-assert $VENV/bin/python$PYV setup.py build
+assert $PYTHONBIN setup.py build
 echo ""
 echo "** Installing pip..."
-assert $VENV/bin/python$PYV setup.py install
+assert $PYTHONBIN setup.py install
 echo ""
 
 # gettext
@@ -229,11 +254,15 @@ echo "** Installing ipdb and ipython..."
 assert $VENV/bin/pip install ipdb
 echo ""
 
-echo "** Installing mysql python driver..."
+echo "** Installing mysql driver..."
 assert $VENV/bin/pip install mysql-python
 echo ""
 
-echo "** Installing python-memcached..."
+echo "** Installing dateutil..."
+assert $VENV/bin/pip install python-dateutil
+echo ""
+
+echo "** Installing memcached..."
 assert $VENV/bin/pip install python-memcached
 echo ""
 
@@ -277,6 +306,7 @@ echo ""
 echo -n "** Cleaning up a little... "
 cd $VENV
 assert rm -Rf "$VENV/src/Python-$PYV"
+assert rm -Rf "$VENV/src/mod_wsgi-$AMW"
 assert rm -Rf "$VENV/src/setuptools-$STV"
 assert rm -Rf "$VENV/src/pip-$PIPV"
 assert rm -Rf "$VENV/src/gettext-$GTV"

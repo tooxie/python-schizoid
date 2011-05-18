@@ -73,6 +73,7 @@ By default *schizoid.sh* downloads, compiles (when required) and installs the
 following software:
 
 * Python 2.7
+* mod_wsgi
 * setuptools 0.6c11
 * pip 0.8.2
 * GNU gettext 0.18.1.1
@@ -81,6 +82,7 @@ following software:
 * ipdb
 * ipython
 * mysql-python
+* python-dateutil
 * python-memcached
 * soaplib
 * suds
